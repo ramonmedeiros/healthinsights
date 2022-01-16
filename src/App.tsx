@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 import { DropzoneArea } from 'material-ui-dropzone'
 import { getFileContent } from "./zip_utils.js"
 import HeartBeatSerie from "./models"
+import HeartBeat from './Heartbeat'
 
 const HEARTBEAT_SERIES = "HKQuantityTypeIdentifierHeartRate"
 
 export default function App() {
     //const [exportFile, setExportFile] = useState<File>()
-    const [heartbeat, setHeartbeat] = useState<React.Component>()
+    const [heartbeat, setHeartbeat] = useState<JSX.Element>()
 
     function uploadFile(files: File[]) {
         if (files.length !== 1) {
@@ -45,9 +46,7 @@ export default function App() {
                 })
             }
         }
-        debugger
-        console.log(series)
-
+        setHeartbeat(<HeartBeat series={series} />)
     }
 
     return (
