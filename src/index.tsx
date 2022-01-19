@@ -2,9 +2,20 @@ import React from 'react';
 import { render } from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import HeartBeat from './Heartbeat';
+
 
 render(
-    <App />,
+  <React.Fragment>
+    <Router>
+      <Routes>
+        <Route path="/" element={<App />} />
+       <Route path="/heartbeat" element={<HeartBeat />} /> 
+      </Routes>
+    </Router>
+  </React.Fragment>
+  ,
   document.getElementById('root')
 );
 

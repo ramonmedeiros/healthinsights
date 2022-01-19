@@ -1,19 +1,20 @@
-import React, {} from "react"
+import React, { useState } from "react"
 import { LineChart, XAxis, Tooltip, Line } from "recharts"
 import HeartBeatSerie from "./models"
 
-type ComponentProps = {
-    series: HeartBeatSerie[]
-}
 
-export default function HeartBeat(props: ComponentProps) {
+
+export default function HeartBeat() {
+    const [serie, setSerie] = useState<HeartBeatSerie[]>() 
+
+
 
     return (
         <React.Fragment>
             <LineChart
                 width={400}
                 height={400}
-                data={props.series}
+                data={serie}
                 margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
             >
                 <XAxis dataKey="creationDate" />
