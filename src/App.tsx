@@ -3,7 +3,7 @@ import { DropzoneArea } from 'material-ui-dropzone'
 import { getFileContent as unzipSpecificFile } from "./zip_utils.js"
 import { db } from './db'
 import { useNavigate } from 'react-router-dom'
-import {extractHeartBeat, HEARTBEAT_SERIES} from './manipulations'
+import { ParseExport } from './manipulations'
 
 function App() {
     let navigate = useNavigate();
@@ -15,18 +15,12 @@ function App() {
         }
 
         let content = await unzipSpecificFile(files[0], "export.xml")
-        let heartbeat = extractHeartBeat(content)
 
-        try {
-            await db.exports.add({
-                id: HEARTBEAT_SERIES,
-                value: JSON.stringify(heartbeat),
-            })
-        } catch (error) {
-            debugger
-            console.error(`Failed to add : ${error}`);
-        }
-        //navigate("/heartbeat")
+        const parser = new ParseExport(content)
+        let keys = parser.getAvailableDateTypes()
+        console.log(keys)
+
+        await db.upsertHeartbeat(parser.extractHeartBeat())
     }
 
     return (

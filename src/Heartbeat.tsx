@@ -1,24 +1,32 @@
 import React, { useEffect, useState } from "react"
 import HeartBeatSerie from "./models"
 import { db } from './db'
-import { HEARTBEAT_SERIES } from "./manipulations"
 import ReactECharts from 'echarts-for-react';
+import { HEARTBEAT_SERIES } from "./manipulations"
 
 
 export default function HeartBeat() {
     const [option, setOption] = useState<{}>({})
 
     useEffect(() => {
-        db.exports.where("id").equals(HEARTBEAT_SERIES).each(serie => {
-            let s = JSON.parse(serie.value) as HeartBeatSerie[]
+        db.exports.get(HEARTBEAT_SERIES).then(result => {
+            if (!result) {
+                throw Error("heartbeat data not found")
+            }
 
             const options = {
+                title: {
+                    left: 'center',
+                    text: 'Historical Heartbeat time-series'
+                },
                 dataset: {
-                    source: s,
-                    dimensions: [{name: 'creationDate'}, 
-                                 {name: 'value', type: 'number', displayName: 'BPM'}, 
-                                 {name: 'startDate'}, 
-                                 {name: 'endDate'}]
+                    source: JSON.parse(result.value) as HeartBeatSerie[],
+                    dimensions: [
+                        { name: 'creationDate' },
+                        { name: 'value', type: 'number', displayName: 'BPM' },
+                        { name: 'startDate' },
+                        { name: 'endDate' }
+                    ]
                 },
                 xAxis: {
                     type: 'category',
@@ -64,15 +72,24 @@ export default function HeartBeat() {
                                     minute: "numeric",
                                 })}`
                             },
-                        }, 
+                        },
                     },
                 },
                 toolbox: {
+                    show: true,
+                    left: 'center',
+                    itemSize: 15,
+                    top: 20,
                     feature: {
                         dataZoom: {
                             yAxisIndex: false
-                        }
-                    }
+                        },
+                        restore: {
+                            show: false
+                        },
+                        saveAsImage: {}
+                    },
+
                 },
                 dataZoom: [
                     {
@@ -80,16 +97,23 @@ export default function HeartBeat() {
                         throttle: 50
                     },
                 ],
+                grid: {
+                    top: 110,
+                    left: 80,
+                    right: 80,
+                    height: 400
+                },
             }
             setOption(options)
         })
-
     })
-
 
     return (
         <React.Fragment>
-            <ReactECharts option={option} />
+            <ReactECharts
+                option={option}
+                style={{ height: '600px', width: '100%' }}
+            />
         </React.Fragment>
     )
 }
