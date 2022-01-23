@@ -1,0 +1,24 @@
+name: GithubPages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+
+    - name: Set github name
+      run: |
+        git config --local user.email "ramon@ramonmedeiros.dev"
+        git config --local user.name "Ramon Medeiros"
+        git remote set-url origin https://${{ secrets.TOKEN }}@github.com/HealthInsights/frontend.git
+    - run: |
+        npm install
+        npm run deploy
