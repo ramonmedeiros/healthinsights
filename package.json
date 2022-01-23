@@ -16,6 +16,7 @@
     "@zip.js/zip.js": "^2.3.23",
     "dexie": "^3.2.0",
     "dexie-react-hooks": "^1.1.1",
+    "echarts": "^5.2.2",
     "echarts-for-react": "^3.0.2",
     "framer-motion": "^5.6.0",
     "material-ui-dropzone": "^3.5.0",
