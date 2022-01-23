@@ -22,7 +22,7 @@ jobs:
       run: |
         git config --local user.email "ramon@ramonmedeiros.dev"
         git config --local user.name "Ramon Medeiros"
-        git remote set-url origin https://${{ secrets.TOKEN }}@github.com/HealthInsights/frontend.git
+        git remote set-url origin https://${{ secrets.TOKEN }}@github.com/ramonmedeiros/healthinsights.git
 
     - name: Deploy
       run: |
