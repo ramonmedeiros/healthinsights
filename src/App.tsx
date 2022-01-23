@@ -26,7 +26,6 @@ function App() {
             debugger
             console.error(`Failed to add : ${error}`);
         }
-        console.log("done")
         //navigate("/heartbeat")
     }
 

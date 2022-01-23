@@ -6,13 +6,12 @@ export interface Exports {
 }
 
 const DB_NAME = "health_insights"
-export const ID = "ID"
 
 export class Database extends Dexie {
     exports!: Table<Exports>;
 
     constructor() {
-        super('DB_NAME');
+        super(DB_NAME);
         this.version(1).stores({
             exports: '++id'
         });

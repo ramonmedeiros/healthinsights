@@ -1,26 +1,49 @@
-import React, { useState } from "react"
-import { LineChart, XAxis, Tooltip, Line } from "recharts"
+import React, { useEffect, useState } from "react"
 import HeartBeatSerie from "./models"
+import { db } from './db'
+import { HEARTBEAT_SERIES } from "./manipulations"
+import ReactECharts from 'echarts-for-react';
 
+const upColor = '#ec0000';
+const downColor = '#00da3c';
 
+const upBorderColor = '#8A0000';
+const downBorderColor = '#008F28';
 
 export default function HeartBeat() {
-    const [serie, setSerie] = useState<HeartBeatSerie[]>() 
+    const [option, setOption] = useState<{}>({})
 
+    useEffect(() => {
+        db.exports.where("id").equals(HEARTBEAT_SERIES).each(serie => {
+            let s = JSON.parse(serie.value) as HeartBeatSerie[]
+
+            const options = {
+                dataset: {
+                    source: s,
+                    dimensions: ['creationDate', 'value', 'startDate', 'endDate']
+                  },
+                xAxis: {
+                      type: 'category',
+                    },
+                    
+                yAxis: {},
+                series: [
+                    {
+                        type: 'line',
+                        smooth: true
+                    },
+                ],
+                tooltip:{},
+            }
+            setOption(options)
+        })
+
+    })
 
 
     return (
         <React.Fragment>
-            <LineChart
-                width={400}
-                height={400}
-                data={serie}
-                margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
-            >
-                <XAxis dataKey="creationDate" />
-                <Tooltip />
-                <Line type="monotone" dataKey="value" stroke="#ff7300" yAxisId={0} />
-            </LineChart>
+            <ReactECharts option={option} />
         </React.Fragment>
     )
 }
