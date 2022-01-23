@@ -44,7 +44,7 @@ export class ParseExport {
     getAvailableDateTypes(): Map<string, number> {
         let records = this.parser.documentElement.querySelectorAll("Record")
         let series = new Map<string, number>()
-        debugger
+
         for (const resource of records) {
             const type = resource.getAttribute("type") || ""
             const search = series.get(type)

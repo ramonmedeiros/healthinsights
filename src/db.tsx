@@ -21,13 +21,20 @@ export class Database extends Dexie {
 
     async upsertHeartbeat(series: HeartBeatSerie[]) {
         try {
+            if (await db.exports.get(HEARTBEAT_SERIES)) {
+                await db.exports.delete(HEARTBEAT_SERIES)
+            }
+        } catch (error) {
+            console.error(`Failed to retrieve heartbeat data: ${error}`);
+        }
+
+        try {
             await db.exports.add({
                 id: HEARTBEAT_SERIES,
                 value: JSON.stringify(series),
             })
         } catch (error) {
-            console.error(`Failed to add : ${error}`);
-
+            console.error(`Failed to add heartbeat data: ${error}`);
         }
     }
 }
