@@ -1,7 +1,7 @@
-import HeartBeatSerie from './models'
+import {HeartBeatSerie, ActivitySummary} from './models'
 
 export const HEARTBEAT_SERIES = "HKQuantityTypeIdentifierHeartRate"
-
+export const ACTIVITY_SUMMARY = "ActivitySummary"
 
 export class ParseExport {
     parser: Document;
@@ -26,6 +26,7 @@ export class ParseExport {
         }
         return doc
     }
+
     extractHeartBeat(): HeartBeatSerie[] {
         let records = this.parser.documentElement.querySelectorAll("Record[type='" + HEARTBEAT_SERIES + "']")
         var series: HeartBeatSerie[] = []
@@ -41,6 +42,7 @@ export class ParseExport {
         }
         return series
     }
+
     getAvailableDateTypes(): Map<string, number> {
         let records = this.parser.documentElement.querySelectorAll("Record")
         let series = new Map<string, number>()
@@ -56,4 +58,27 @@ export class ParseExport {
         }
         return series
     }
+    
+    extractActivity(): ActivitySummary[] {
+        let records = this.parser.documentElement.querySelectorAll(ACTIVITY_SUMMARY)
+        var series: ActivitySummary[] = []
+
+        for (const resource of records) {
+            series.push({
+                dateComponents: new Date(Date.parse(resource.getAttribute("dateComponents") || Date.now().toString())),
+                activeEnergyBurned: Number(resource.getAttribute("activeEnergyBurned")),
+                activeEnergyBurnedGoal: Number(resource.getAttribute("activeEnergyBurnedGoal")),
+                activeEnergyBurnedUnit: resource.getAttribute("activeEnergyBurnedUnit") || "kcal",
+                appleMoveTime: Number(resource.getAttribute("appleMoveTime")),
+                appleMoveTimeGoal: Number(resource.getAttribute("appleMoveTimeGoal")),
+                appleExerciseTime: Number(resource.getAttribute("appleExerciseTime")),
+                appleExerciseTimeGoal: Number(resource.getAttribute("appleExerciseTimeGoal")),
+                appleStandHours: Number(resource.getAttribute("appleStandHours")),
+                appleStandHoursGoal: Number(resource.getAttribute("appleStandHoursGoal")),
+            })
+
+        }
+        return series
+    }
 }
+    

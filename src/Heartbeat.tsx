@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import HeartBeatSerie from "./models"
+import {HeartBeatSerie} from "./models"
 import { db } from './db'
 import ReactECharts from 'echarts-for-react';
 import { HEARTBEAT_SERIES } from "./manipulations"

@@ -4,7 +4,7 @@ import Home from './Home';
 import reportWebVitals from './reportWebVitals';
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import HeartBeat from './Heartbeat';
-
+import Activity from './Activity'
 
 render(
   <React.Fragment>
@@ -12,6 +12,7 @@ render(
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/heartbeat" element={<HeartBeat />} />
+        <Route path="/activity" element={<Activity />} />
       </Routes>
     </Router>
   </React.Fragment>

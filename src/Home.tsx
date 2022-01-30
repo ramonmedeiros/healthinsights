@@ -22,7 +22,9 @@ export default function Home() {
             keys.push(<h5 key={key[0]}>{key[0]}</h5>)
         }
         setKeys(keys)
+
         await db.upsertHeartbeat(parser.extractHeartBeat())
+        await db.upsertActivitySummary(parser.extractActivity())
     }
 
     function hideDropzone(){
@@ -46,6 +48,7 @@ export default function Home() {
 
             <h1>Mapped content</h1>
             <a href="/#/heartbeat"><h2>Historical Heatbeat</h2></a>
+            <a href="/#/activity"><h2>Activity Summary</h2></a>
             {keys}
         </React.Fragment>
     )
